@@ -20,8 +20,8 @@
       }
     },
     created() {
-      const _this = this
-      const url = '/api/seller'
+      const _this = this;
+      const url = '/api/seller';
       this.$http.get(url).then((res) => {
           if(res.data.errCode == ERR_OK){
             _this.seller = res.data.data
