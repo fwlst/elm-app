@@ -11,6 +11,12 @@
   }
 }
 
+.border-none(){
+  &:after{
+    display: none;
+  }
+}
+
 .bg-image(@url){
   background-image: url("@{url}@2x.png");
   @media (min-device-pixel-ratio: 2) ,(-webkit-device-pixel-ratio: 2){

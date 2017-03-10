@@ -9,6 +9,7 @@ import ratings from 'components/ratings/ratings.vue'
 import seller from 'components/seller/seller.vue'
 
 import 'common/css/index.less'
+import 'common/css/reset.css'
 
 Vue.use(VueRouter)
 Vue.prototype.$http = axios
