@@ -2,7 +2,7 @@
     <div class="goods">
       <div class="menu-wrapper" v-el:menu-wrapper>
         <ul class="menu-ul">
-          <li v-for="item in goods" class="menu-item" :class="{'current':currentIndex===$index}">
+          <li v-for="item in goods" class="menu-item" :class="{'current':currentIndex===$index}" @click="selectMenu($index,$event)">
             <span class="text">
               <span v-show="item.type > 0" class="icon" :class="classMap[item.type]"></span>{{item.name}}
             </span>
@@ -11,10 +11,10 @@
       </div>
       <div class="foods-wrapper" v-el:foods-wrapper >
         <ul>
-          <li v-for="item in goods" class="foods-list">
+          <li v-for="item in goods" class="foods-list food-list-hook">
             <h1 class="title">{{item.name}}</h1>
             <ul>
-              <li v-for="food in item.foods" class="food-item food-list-hook">
+              <li v-for="food in item.foods" class="food-item">
                 <div class="icon">
                   <img width="57" height="57" :src="food.icon">
                 </div>
@@ -35,11 +35,13 @@
           </li>
         </ul>
       </div>
+      <shopcart></shopcart>
     </div>
 </template>
 
 <script>
   import BScroll from 'better-scroll';
+  import shopcart from 'components/shopCart/shopcart.vue';
   const ERR_OK = 0;
   export default {
     props:{
@@ -52,7 +54,7 @@
         for (let i = 0; i < this.listHeight.length; i++){
           let height1 = this.listHeight[i];
           let height2 = this.listHeight[i + 1];
-          if(!height2 ||  this.scrollY > height1 && this.scrollY < height2){
+          if(!height2 ||  this.scrollY >= height1 && this.scrollY < height2){
               return i;
           }
         }
@@ -85,13 +87,23 @@
         }
     },
     methods: {
+      selectMenu(index,e){
+        if(!e._constructed){
+           return;
+        }
+        let fooList = this.$els.foodsWrapper.getElementsByClassName('food-list-hook');
+        let el = fooList[index];
+        this.foodsScroll.scrollToElement(el,300);
+      },
       _initScroll() {
-        this.menuScroll = new BScroll(this.$els.menuWrapper,{ });
+        this.menuScroll = new BScroll(this.$els.menuWrapper,{
+            click: true
+        });
         this.foodsScroll = new BScroll(this.$els.foodsWrapper,{
             probeType: 3
         });
         this.foodsScroll.on('scroll',(pos) => {
-            this.scrollY = Math.abs(Math.random(pos.y));
+            this.scrollY = Math.abs(Math.round(pos.y));
         })
       },
       _caluclateHeight (){
@@ -103,8 +115,10 @@
             height += item.clientHeight;
             this.listHeight.push(height);
         }
-        console.log(this.listHeight)
       }
+    },
+    components: {
+      shopcart
     }
 
   }
@@ -129,9 +143,16 @@
         width: 56px;
         height: 54px;
         line-height: 14px;
-        padding-left: 12px;
+        padding: 0 12px;
         &.current{
-
+          position: relative;
+          z-index: 10;
+          margin-top: -1px;
+          background: #fff;
+          font-weight: 700;
+          .text{
+            .border-none
+          }
         }
         .text{
           display: table-cell;
