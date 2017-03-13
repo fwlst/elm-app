@@ -6,7 +6,7 @@
       <div class="tab-item" v-link="{path:'/ratings'}">评论</div>
       <div class="tab-item" v-link="{path:'/seller'}">商家</div>
     </div>
-    <router-view></router-view>
+    <router-view :seller="seller"></router-view>
   </div>
 </template>
 
