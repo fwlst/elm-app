@@ -14,23 +14,23 @@
             display: inline-block;
             padding: 6px;
             transition: all 0.2s linear;
-            &.move-transition{
+            &.move-transition {
                 opacity: 1;
-                transform: translate3D(0,0,0);
-                .inner{
+                transform: translate3d(0, 0, 0);
+                .inner {
                     display: inline-block;
                     font-size: 24px;
                     line-height: 24px;
-                    color: rgb(0,160,220);
+                    color: rgb(0, 160, 220);
                     transition: all 0.2s linear;
-                    transform:rotate(0);
+                    transform: rotate(0);
                 }
             }
-            &.move-enter,&.move-leave{
+            &.move-enter, &.move-leave {
                 opacity: 0;
-                transform: translate3D(24px,0,0);
-                .inner{
-                    transform:rotate(180deg);
+                transform: translate3d(24px, 0, 0);
+                .inner {
+                    transform: rotate(180deg);
                 }
             }
         }
@@ -42,14 +42,14 @@
             line-height: 24px;
             text-align: center;
             font-size: 10px;
-            color: rgb(147,153,159);
+            color: rgb(147, 153, 159);
         }
         .cart-add {
             display: inline-block;
             font-size: 24px;
             line-height: 24px;
             padding: 6px;
-            color: rgb(0,160,220);
+            color: rgb(0, 160, 220);
         }
     }
 </style>
@@ -69,16 +69,17 @@
                     return;
                 }
                 if (!this.food.count) {
-                    Vue.set(this.food,'count',1)
+                    Vue.set(this.food, 'count', 1)
                 } else {
                     this.food.count++;
                 }
+                this.$dispatch('cart.add', e.target);
             },
             decreaseCart(e){
                 if (!e._constructed) {
                     return;
                 }
-                if(this.food.count){
+                if (this.food.count) {
                     this.food.count--;
                 }
             }
