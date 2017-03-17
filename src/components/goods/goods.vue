@@ -15,7 +15,7 @@
                 <li v-for="item in goods" class="foods-list food-list-hook">
                     <h1 class="title">{{item.name}}</h1>
                     <ul>
-                        <li v-for="food in item.foods" class="food-item">
+                        <li v-for="food in item.foods" class="food-item" @click="selectFood(food,$event)">
                             <div class="icon">
                                 <img width="57" height="57" :src="food.icon">
                             </div>
@@ -41,6 +41,7 @@
         </div>
         <shopcart v-ref:shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice"
                   :min-price="seller.minPrice"></shopcart>
+        <food :food="selectedFood" v-ref:food></food>
     </div>
 </template>
 
@@ -48,6 +49,7 @@
     import BScroll from 'better-scroll';
     import shopcart from 'components/shopCart/shopcart.vue';
     import cartcontrol from 'components/cartcontrol/cartcontrol.vue';
+    import food from 'components/food/food.vue';
 
     const ERR_OK = 0;
     export default {
@@ -96,12 +98,12 @@
                 console.log(err)
             })
         },
-        name: '',
         data () {
             return {
                 goods: [],
                 listHeight: [],
-                scrollY: 0
+                scrollY: 0,
+                selectedFood: {}
             }
         },
         methods: {
@@ -140,11 +142,19 @@
                 this.$nextTick(() => {
                     this.$refs.shopcart.drop(target);
                 })
+            },
+            selectFood(food,e){
+                if (!e._constructed) {
+                    return;
+                }
+                this.selectedFood = food;
+                this.$refs.food.show();
             }
         },
         components: {
             shopcart,
-            cartcontrol
+            cartcontrol,
+            food
         },
         events: {
             'cart.add'(target){
