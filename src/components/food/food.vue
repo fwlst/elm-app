@@ -39,7 +39,7 @@
                                 <span class="name">{{rating.username}}</span>
                                 <img class="avatar" :src="rating.avatar" width="12" height="12">
                             </div>
-                            <div class="time">{{rating.rateTime}}</div>
+                            <div class="time">{{rating.rateTime | formatDate}}</div>
                             <p class="text">
                                 <span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>
                                 {{rating.text}}
@@ -238,15 +238,13 @@
 <script type="text/ecmascript-6">
     import Vue from 'vue';
     import BScroll from 'better-scroll';
+    import {formatDate} from 'common/js/date';
     import cartcontrol from 'components/cartcontrol/cartcontrol.vue';
     import split from 'components/split/split.vue';
     import ratingselect from 'components/ratingselect/ratingselect.vue';
 
 
     const ALL = 2;
-    const NEGATIVE = 1;
-    const POSITIVE = 0;
-
 
     export default {
         props: {
@@ -258,7 +256,7 @@
             return {
                 showFlag: false,
                 selectType: ALL,
-                onlyContent: true,
+                onlyContent: false,
                 desc: {
                     all: '全部',
                     positive: '推荐',
@@ -293,6 +291,7 @@
                 Vue.set(this.food, 'count', 1)
             },
             needShow(type,text){
+                console.log(type,text);
                 if(this.onlyContent && !text){
                     return false;
                 }
@@ -306,23 +305,27 @@
         events:{
             'rating-type.select'(type){
                 this.selectType = type;
-                console.log(type);
                 this.$nextTick(() => {
                     this.scroll.refresh();
                 })
             },
             'content.toggle'(onlyContent){
                 this.onlyContent = onlyContent;
-                console.log(onlyContent)
                 this.$nextTick(() => {
                     this.scroll.refresh();
                 })
+            }
+        },
+        filters: {
+            formatDate(time) {
+                let date = new Date(time);
+                return formatDate(date, 'yyyy-MM-dd hh:mm');
             }
         },
         components: {
             cartcontrol,
             split,
             ratingselect
-        },
+        }
     };
 </script>
