@@ -291,7 +291,6 @@
                 Vue.set(this.food, 'count', 1)
             },
             needShow(type,text){
-                console.log(type,text);
                 if(this.onlyContent && !text){
                     return false;
                 }

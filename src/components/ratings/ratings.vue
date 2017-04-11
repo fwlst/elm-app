@@ -76,7 +76,6 @@
                 onlyContent: false
             }
         },
-        methods: {},
         created() {
             const _this = this;
             const url = '/api/ratings';

@@ -11,8 +11,8 @@ import seller from 'components/seller/seller.vue'
 import 'common/css/index.less'
 import 'common/css/reset.css'
 
-Vue.use(VueRouter)
-Vue.prototype.$http = axios
+Vue.use(VueRouter);
+Vue.prototype.$http = axios;
 
 let app = Vue.extend(App);
 
@@ -30,7 +30,7 @@ router.map({
   '/seller':{
     component: seller
   }
-})
+});
 
-router.start(app, '#app')
-router.go('/goods')
+router.start(app, '#app');
+//router.go('/goods')
